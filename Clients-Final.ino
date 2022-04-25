@@ -20,7 +20,7 @@ int comma_pos = 0;
 
 long duration;
 int distance;
-int carCount = 0; 
+double carCount = 0.0; 
 bool carDetected = false;
 int SENSE_DELAY_MILLIS = 0;
 int cyclesSinceLastPulse = 0;
@@ -134,7 +134,7 @@ bool carDet() {
   int fastAvg = FAST_AVG.getAvg();
   int slowAvg = SLOW_AVG.getAvg();
 
-  return fastAvg > slowAvg && fastAvg > (slowAvg + 12);
+  return fastAvg < slowAvg && fastAvg < (slowAvg + 12);
 }
 
 void updateNum(int distanceV) {
@@ -144,7 +144,7 @@ void updateNum(int distanceV) {
   } 
   else if((carDetected == true) && (!carDet())) { // back to idle
     carDetected = false;
-    carCount++;
+    carCount += 0.5;
     write_car();
   }
 
@@ -157,7 +157,7 @@ void loop() {
   updateNum(carDet2);
 
 //  // Prints the distance on the Serial Monitor
-//  Serial.print("Distance: ");
+//  Serial.print("Distance: ");xq
 //  Serial.println(distance);
 //  Serial.print(carCount);
 
@@ -166,7 +166,7 @@ void loop() {
   if(time_passed > next_day) {
     //Serial.println(day);
     next_day += milliseconds_in_day;
-    carCount = 0;
+    carCount = 0.0;
     day += 1;
     // Write
     // Day n: 
